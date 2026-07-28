@@ -19,7 +19,7 @@ interface NavGroup {
 }
 
 export const Sidebar: React.FC<{ isOpen?: boolean; onClose?: () => void }> = ({ isOpen = true, onClose }) => {
-  const { user, logout, switchRole } = useAuth();
+  const { user, logout } = useAuth();
   const navigate = useNavigate();
 
   const groups: NavGroup[] = [
@@ -124,26 +124,23 @@ export const Sidebar: React.FC<{ isOpen?: boolean; onClose?: () => void }> = ({ 
           </div>
         ))}
 
-        {/* Admin Console Switcher */}
-        <div className="pt-2 border-t border-slate-800/80">
-          <button
-            onClick={() => {
-              if (user?.role !== 'admin') {
-                switchRole('admin');
-              }
-              navigate('/admin');
-            }}
-            className="w-full flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-purple-300 transition bg-purple-500/10 hover:bg-purple-500/20 border border-purple-500/30"
-          >
-            <div className="flex items-center gap-2.5">
-              <Shield className="h-4 w-4 text-purple-400" />
-              <span>Admin Console</span>
-            </div>
-            <span className="text-[10px] font-bold uppercase tracking-wider bg-purple-500/20 px-1.5 py-0.5 rounded text-purple-300">
-              Portal
-            </span>
-          </button>
-        </div>
+        {/* Admin Console Switcher - Visible ONLY to Admin Role */}
+        {user?.role === 'admin' && (
+          <div className="pt-2 border-t border-slate-800/80">
+            <button
+              onClick={() => navigate('/admin')}
+              className="w-full flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-purple-300 transition bg-purple-500/10 hover:bg-purple-500/20 border border-purple-500/30"
+            >
+              <div className="flex items-center gap-2.5">
+                <Shield className="h-4 w-4 text-purple-400" />
+                <span>Admin Console</span>
+              </div>
+              <span className="text-[10px] font-bold uppercase tracking-wider bg-purple-500/20 px-1.5 py-0.5 rounded text-purple-300">
+                Portal
+              </span>
+            </button>
+          </div>
+        )}
       </div>
 
       {/* User Footer Profile Card */}
