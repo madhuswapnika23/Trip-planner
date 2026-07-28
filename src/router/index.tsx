@@ -1,4 +1,4 @@
-import { createBrowserRouter, Navigate } from 'react-router-dom';
+import { createHashRouter, Navigate } from 'react-router-dom';
 
 // Layouts
 import { PublicLayout } from '@/layouts/PublicLayout';
@@ -40,7 +40,7 @@ import { AIUsageAnalytics } from '@/pages/admin/AIUsageAnalytics';
 import { FeaturedDestinations } from '@/pages/admin/FeaturedDestinations';
 import { FeedbackManagement } from '@/pages/admin/FeedbackManagement';
 
-export const router = createBrowserRouter([
+export const router = createHashRouter([
   // ─── PUBLIC ROUTES ────────────────────────────────────────────────────────
   {
     path: '/',
