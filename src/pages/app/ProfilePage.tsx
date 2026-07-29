@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { useAuth } from '@/auth/useAuth';
-import { Mail, Calendar, MapPin, Award, Edit3, Check } from 'lucide-react';
+import { SAVED_TRIPS } from '@/data/mockData';
+import { Mail, Calendar, MapPin, Award, Edit3, Check, Compass } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Modal } from '@/components/ui/Modal';
 import { useToast } from '@/components/ui/Toast';
+
+const MOCK_USER_IDS = ['user-1', 'admin-1'];
 
 export const ProfilePage: React.FC = () => {
   const { user, updateUser } = useAuth();
@@ -12,6 +15,24 @@ export const ProfilePage: React.FC = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [name, setName] = useState(user?.name || '');
   const [email, setEmail] = useState(user?.email || '');
+
+  const isPrebuiltUser = user ? MOCK_USER_IDS.includes(user.id) : false;
+
+  // Dynamic stats
+  const countriesVisited = isPrebuiltUser
+    ? [...new Set(SAVED_TRIPS.map(t => t.country))]
+    : [];
+  const tripsCount = isPrebuiltUser ? SAVED_TRIPS.length : (user?.tripsCount ?? 0);
+
+  // Badges — only prebuilt users with trips get earned badges
+  const allBadges = [
+    { emoji: '⛩️', title: 'Kyoto Explorer', desc: 'Visited Ancient Shrines', country: 'Japan' },
+    { emoji: '🥖', title: 'Parisian Foodie', desc: 'Michelin Dining Enthusiast', country: 'France' },
+    { emoji: '🌴', title: 'Bali Nomad', desc: 'Wellness & Beach Wanderer', country: 'Indonesia' },
+    { emoji: '🏔️', title: 'Alpine Trekker', desc: 'Locked Achievement', country: null },
+  ];
+
+  const earnedCountries = new Set(countriesVisited);
 
   const handleOpenModal = () => {
     setName(user?.name || '');
@@ -57,7 +78,11 @@ export const ProfilePage: React.FC = () => {
           <div className="flex flex-wrap items-center justify-center sm:justify-start gap-4 text-xs text-slate-300">
             <div className="flex items-center gap-1.5 bg-slate-950/60 px-3 py-1.5 rounded-xl border border-slate-800">
               <MapPin className="h-4 w-4 text-cyan-400" />
-              <span>4 Countries Visited</span>
+              <span>{countriesVisited.length} {countriesVisited.length === 1 ? 'Country' : 'Countries'} Visited</span>
+            </div>
+            <div className="flex items-center gap-1.5 bg-slate-950/60 px-3 py-1.5 rounded-xl border border-slate-800">
+              <Compass className="h-4 w-4 text-indigo-400" />
+              <span>{tripsCount} {tripsCount === 1 ? 'Trip' : 'Trips'} Completed</span>
             </div>
             <div className="flex items-center gap-1.5 bg-slate-950/60 px-3 py-1.5 rounded-xl border border-slate-800">
               <Calendar className="h-4 w-4 text-emerald-400" />
@@ -83,31 +108,34 @@ export const ProfilePage: React.FC = () => {
           <span>Travel Badges</span>
         </h2>
 
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-4 text-center space-y-1">
-            <span className="text-3xl">⛩️</span>
-            <p className="text-xs font-bold text-white">Kyoto Explorer</p>
-            <p className="text-[10px] text-slate-400">Visited Ancient Shrines</p>
+        {tripsCount > 0 ? (
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            {allBadges.map((badge) => {
+              const isEarned = badge.country ? earnedCountries.has(badge.country) : false;
+              return (
+                <div
+                  key={badge.title}
+                  className={`rounded-2xl border border-slate-800 bg-slate-900/60 p-4 text-center space-y-1 ${!isEarned ? 'opacity-50' : ''}`}
+                >
+                  <span className="text-3xl">{badge.emoji}</span>
+                  <p className="text-xs font-bold text-white">{badge.title}</p>
+                  <p className="text-[10px] text-slate-400">
+                    {isEarned ? badge.desc : 'Locked Achievement'}
+                  </p>
+                </div>
+              );
+            })}
           </div>
-
-          <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-4 text-center space-y-1">
-            <span className="text-3xl">🥖</span>
-            <p className="text-xs font-bold text-white">Parisian Foodie</p>
-            <p className="text-[10px] text-slate-400">Michelin Dining Enthusiast</p>
+        ) : (
+          /* Empty state for new users */
+          <div className="rounded-2xl border border-dashed border-slate-700 bg-slate-900/40 p-8 flex flex-col items-center justify-center text-center space-y-3">
+            <div className="text-4xl">🏆</div>
+            <h3 className="text-base font-bold text-white">No badges yet</h3>
+            <p className="text-xs text-slate-400 max-w-sm">
+              Start exploring destinations and completing trips to unlock travel badges and achievements!
+            </p>
           </div>
-
-          <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-4 text-center space-y-1">
-            <span className="text-3xl">🌴</span>
-            <p className="text-xs font-bold text-white">Bali Nomad</p>
-            <p className="text-[10px] text-slate-400">Wellness & Beach Wanderer</p>
-          </div>
-
-          <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-4 text-center opacity-50 space-y-1">
-            <span className="text-3xl">🏔️</span>
-            <p className="text-xs font-bold text-white">Alpine Trekker</p>
-            <p className="text-[10px] text-slate-400">Locked Achievement</p>
-          </div>
-        </div>
+        )}
       </div>
 
       {/* Edit Profile Modal */}
