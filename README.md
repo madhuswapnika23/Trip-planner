@@ -1,11 +1,11 @@
-# ✈️ Roamly — AI Travel Itinerary & Blueprint Planner
+#  Roamly — AI Travel Itinerary & Blueprint Planner
 > **Frontend Internship Assignment Submission** (Option 3: Trip Planner)  
 > Live App: [https://madhuswapnika23.github.io/Trip-planner/](https://madhuswapnika23.github.io/Trip-planner/)  
 > Repository: [https://github.com/madhuswapnika23/Trip-planner.git](https://github.com/madhuswapnika23/Trip-planner.git)
 
 ---
 
-## 🌟 Overview & Assignment Fit
+##  Overview & Assignment Fit
 
 **Roamly** is an interactive, AI-powered travel blueprint application designed to transform free-form user prompt inputs (destinations, duration, budgets, travel styles, and interests) into structured, day-by-day itineraries.
 
@@ -13,7 +13,7 @@ Rather than dumping raw LLM text into a chatbot window, Roamly forces the AI to 
 
 ---
 
-## 🎯 Assignment Checklist & Features
+##  Assignment Checklist & Features
 
 | Requirement | Implementation Details | Status |
 | :--- | :--- | :---: |
@@ -28,7 +28,7 @@ Rather than dumping raw LLM text into a chatbot window, Roamly forces the AI to 
 
 ---
 
-## 🛠️ Tech Stack & Dependencies
+##  Tech Stack & Dependencies
 
 - **Frontend Framework:** React 18 + TypeScript + Vite
 - **Styling:** Tailwind CSS (Vanilla CSS design system, dark mode theme `#0A0A0F`)
@@ -40,7 +40,7 @@ Rather than dumping raw LLM text into a chatbot window, Roamly forces the AI to 
 
 ---
 
-## ⚡ Handling Bad AI Output & Failure Modes (20% Weight)
+## Handling Bad AI Output & Failure Modes (20% Weight)
 
 Handling unpredictable AI responses reliably is at the core of Roamly's architecture:
 
@@ -62,7 +62,7 @@ Handling unpredictable AI responses reliably is at the core of Roamly's architec
 
 ---
 
-## 🚀 Stretch Features Implemented
+##  Stretch Features Implemented
 
 1. **Drag-and-Drop Activity Reordering:** Reorder itinerary stops seamlessly within a day using `@dnd-kit`.
 2. **Activity Refinement Loop:** Regenerate or swap any single activity within a day using AI without re-generating the entire itinerary.
@@ -72,7 +72,7 @@ Handling unpredictable AI responses reliably is at the core of Roamly's architec
 
 ---
 
-## 💻 Local Setup Instructions
+##  Local Setup Instructions
 
 Follow these steps to run the application locally on your machine:
 
@@ -101,7 +101,7 @@ OPENAI_API_KEY=your_openai_api_key_here
 
 ---
 
-## 🤖 AI Usage Note
+##  AI Usage Note
 
 In accordance with the assignment guidelines, here is an honest disclosure of how AI tools were used during development:
 
@@ -111,7 +111,7 @@ In accordance with the assignment guidelines, here is an honest disclosure of ho
 
 ---
 
-## ⏳ Time Spent
+##  Time Spent
 
 - **Planning & Architecture:** ~1.5 hours
 - **Core React Components & AI Parsing (Zod/OpenAI):** ~2.5 hours
@@ -122,7 +122,7 @@ In accordance with the assignment guidelines, here is an honest disclosure of ho
 
 ---
 
-## 📌 Known Limitations & Future Enhancements
+##  Known Limitations & Future Enhancements
 
 1. **Map Coordinates:** Current maps use destination center coordinates; integration with Mapbox GL would allow real-time polyline route drawing between stops.
 2. **Real-Time Streaming:** Currently uses structured JSON mode. Integrating Vercel AI SDK `streamObject` would stream JSON tokens incrementally.
