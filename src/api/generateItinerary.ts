@@ -174,7 +174,17 @@ function buildDynamicMockItinerary(formValues: TripFormValues): string {
   });
 }
 
-async function callOpenAIDirect(prompt: string, signal?: AbortSignal): Promise<string> {
+import { callGeminiDirect } from '@/api/geminiClient';
+import { getConfiguredProvider } from '@/utils/apiKey';
+
+// Unified direct AI call (Gemini or OpenAI)
+async function callAIDirect(prompt: string, signal?: AbortSignal): Promise<string> {
+  const provider = getConfiguredProvider();
+  if (provider === 'gemini') {
+    // Use Gemini client
+    return await callGeminiDirect(prompt, signal);
+  }
+  // Fallback to OpenAI if Gemini not configured
   const apiKey = import.meta.env.VITE_OPENAI_API_KEY as string | undefined;
   if (!apiKey) throw new Error('No API key');
 
@@ -196,10 +206,10 @@ async function callOpenAIDirect(prompt: string, signal?: AbortSignal): Promise<s
     },
     signal
   );
-
   const data = await response.json();
   return data.choices?.[0]?.message?.content ?? '';
 }
+
 
 async function callServerlessProxy(prompt: string, signal?: AbortSignal): Promise<string> {
   const response = await fetchWithTimeout(
@@ -230,9 +240,9 @@ export async function generateItinerary(
   try {
     rawContent = await callServerlessProxy(prompt, signal);
   } catch (proxyErr: unknown) {
-    // Strategy 2: Direct OpenAI (dev with VITE_OPENAI_API_KEY)
+    // Strategy 2: Direct AI (Gemini or OpenAI)
     try {
-      rawContent = await callOpenAIDirect(prompt, signal);
+      rawContent = await callAIDirect(prompt, signal);
     } catch {
       // Strategy 3: Dynamic destination mock generator
       console.warn(`No active API key — generating tailored itinerary for "${formValues.destination}".`);
