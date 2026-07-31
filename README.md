@@ -1,5 +1,5 @@
 #  Roamly — AI Travel Itinerary & Blueprint Planner
-> **Frontend Internship Assignment Submission** (Option 3: Trip Planner)  
+
 > Live App: [https://madhuswapnika23.github.io/Trip-planner/](https://madhuswapnika23.github.io/Trip-planner/)  
 > Repository: [https://github.com/madhuswapnika23/Trip-planner.git](https://github.com/madhuswapnika23/Trip-planner.git)
 
